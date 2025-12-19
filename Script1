@@ -1,0 +1,668 @@
+-- Create ScreenGui
+local gui = Instance.new("ScreenGui")
+gui.Name = "LuxuryUI"
+gui.ResetOnSpawn = false
+gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Main compact frame (glass style)
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 220, 0, 300)
+frame.Position = UDim2.new(0.5, -110, 0.5, -150)
+frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+frame.BackgroundTransparency = 0.35
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 14)
+corner.Parent = frame
+
+local gradient = Instance.new("UIGradient")
+gradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255,255,255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(200,200,200))
+}
+gradient.Transparency = NumberSequence.new{
+    NumberSequenceKeypoint.new(0, 0.3),
+    NumberSequenceKeypoint.new(1, 0.6)
+}
+gradient.Rotation = 45
+gradient.Parent = frame
+
+-- DRAG BAR (for moving GUI)
+local dragBar = Instance.new("Frame")
+dragBar.Size = UDim2.new(1, 0, 0, 32)
+dragBar.BackgroundTransparency = 0.4
+dragBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+dragBar.Parent = frame
+
+local dragCorner = Instance.new("UICorner")
+dragCorner.CornerRadius = UDim.new(0, 14)
+dragCorner.Parent = dragBar
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -32, 1, 0)
+title.BackgroundTransparency = 1
+title.Text = "ساخته شده توسط 666"
+title.TextColor3 = Color3.fromRGB(0, 0, 0)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 14
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = dragBar
+
+-- Collapse/Expand button
+local toggleBtn = Instance.new("TextButton")
+toggleBtn.Size = UDim2.new(0, 24, 0, 24)
+toggleBtn.Position = UDim2.new(1, -28, 0, 4)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+toggleBtn.BackgroundTransparency = 0.2
+toggleBtn.Text = "▲"
+toggleBtn.Font = Enum.Font.GothamBold
+toggleBtn.TextSize = 14
+toggleBtn.TextColor3 = Color3.fromRGB(0,0,0)
+toggleBtn.BorderSizePixel = 0
+toggleBtn.Parent = dragBar
+
+local crnToggle = Instance.new("UICorner")
+crnToggle.CornerRadius = UDim.new(0, 6)
+crnToggle.Parent = toggleBtn
+
+-- Drag system
+local UIS = game:GetService("UserInputService")
+local dragging = false
+local dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    frame.Position = UDim2.new(
+        startPos.X.Scale, startPos.X.Offset + delta.X,
+        startPos.Y.Scale, startPos.Y.Offset + delta.Y
+    )
+end
+
+dragBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+    or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+    end
+end)
+
+dragBar.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement
+    or input.UserInputType == Enum.UserInputType.Touch) then
+        update(input)
+    end
+end)
+
+UIS.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1
+    or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+-- ScrollFrame
+local scroll = Instance.new("ScrollingFrame")
+scroll.Size = UDim2.new(1, -14, 1, -40)
+scroll.Position = UDim2.new(0, 7, 0, 35)
+scroll.ScrollBarThickness = 5
+scroll.BackgroundTransparency = 1
+scroll.Parent = frame
+
+local layout = Instance.new("UIListLayout")
+layout.Padding = UDim.new(0, 4)
+layout.Parent = scroll
+
+local buttonHeight = 28
+local padding = 4
+local buttonCount = 25
+scroll.CanvasSize = UDim2.new(0, 0, 0, (buttonHeight + padding) * buttonCount)
+
+-- Function to create buttons
+local function createButton(name, callback)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, -6, 0, buttonHeight)
+    btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    btn.BackgroundTransparency = 0.2
+    btn.Text = name
+    btn.TextColor3 = Color3.fromRGB(0, 0, 0)
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 14
+    btn.BorderSizePixel = 0
+    btn.Parent = scroll
+
+    local crn = Instance.new("UICorner")
+    crn.CornerRadius = UDim.new(0, 8)
+    crn.Parent = btn
+
+    btn.MouseEnter:Connect(function()
+        btn.BackgroundTransparency = 0.1
+    end)
+    btn.MouseLeave:Connect(function()
+        btn.BackgroundTransparency = 0.2
+    end)
+
+    btn.MouseButton1Click:Connect(callback)
+end
+
+-- Create 18 buttons (replace scripts later)
+createButton("Infinite Yield", function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+
+createButton("Jerkoff", function()
+-- GUI خیلی کوچک و خوشگل برای R6 / R15
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "MiniR6R15_GUI"
+
+-- پنل خیلی کوچک
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 100, 0, 55)
+frame.Position = UDim2.new(0.45, 0, 0.8, 0)
+frame.BackgroundColor3 = Color3.fromRGB(65, 105, 225)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+-- گوشه گرد
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = frame
+
+-- سایه نرم
+local shadow = Instance.new("ImageLabel", frame)
+shadow.ZIndex = 0
+shadow.Image = "rbxassetid://1316045217"
+shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+shadow.ImageTransparency = 0.7
+shadow.ScaleType = Enum.ScaleType.Slice
+shadow.SliceCenter = Rect.new(10, 10, 118, 118)
+shadow.Size = UDim2.new(1, 10, 1, 10)
+shadow.Position = UDim2.new(0, -5, 0, -5)
+shadow.BackgroundTransparency = 1
+
+-- قابلیت Drag برای موبایل و PC
+local UIS = game:GetService("UserInputService")
+local dragging, dragStart, startPos
+local function update(input)
+	local delta = input.Position - dragStart
+	frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+frame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = frame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then dragging = false end
+		end)
+	end
+end)
+UIS.InputChanged:Connect(function(input)
+	if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+		update(input)
+	end
+end)
+
+-- دکمه R6
+local btnR6 = Instance.new("TextButton", frame)
+btnR6.Size = UDim2.new(0, 40, 0, 22)
+btnR6.Position = UDim2.new(0.08, 0, 0.35, 0)
+btnR6.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+btnR6.Text = "R6"
+btnR6.TextColor3 = Color3.new(1,1,1)
+btnR6.Font = Enum.Font.GothamBold
+btnR6.TextScaled = true
+local c1 = Instance.new("UICorner", btnR6)
+c1.CornerRadius = UDim.new(0, 8)
+
+-- دکمه R15
+local btnR15 = Instance.new("TextButton", frame)
+btnR15.Size = UDim2.new(0, 40, 0, 22)
+btnR15.Position = UDim2.new(0.55, 0, 0.35, 0)
+btnR15.BackgroundColor3 = Color3.fromRGB(100, 255, 150)
+btnR15.Text = "R15"
+btnR15.TextColor3 = Color3.new(0,0,0)
+btnR15.Font = Enum.Font.GothamBold
+btnR15.TextScaled = true
+local c2 = Instance.new("UICorner", btnR15)
+c2.CornerRadius = UDim.new(0, 8)
+
+-- افکت Hover برای PC
+btnR6.MouseEnter:Connect(function() btnR6.BackgroundColor3 = Color3.fromRGB(230,80,80) end)
+btnR6.MouseLeave:Connect(function() btnR6.BackgroundColor3 = Color3.fromRGB(255,100,100) end)
+btnR15.MouseEnter:Connect(function() btnR15.BackgroundColor3 = Color3.fromRGB(80,230,120) end)
+btnR15.MouseLeave:Connect(function() btnR15.BackgroundColor3 = Color3.fromRGB(100,255,150) end)
+
+-- عملکرد دکمه‌ها
+btnR6.MouseButton1Click:Connect(function()
+	loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))()
+end)
+btnR15.MouseButton1Click:Connect(function()
+	loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))()
+end)
+end)
+
+createButton("Noclip", function()
+-- Services
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+-- Variables
+local NoclipConnection
+local Clip = true
+
+-- Functions
+local function noclip()
+    Clip = false
+    local function Nocl()
+        if Clip == false and LocalPlayer.Character then
+            for _, part in pairs(LocalPlayer.Character:GetDescendants()) do
+                if part:IsA("BasePart") and part.CanCollide then
+                    part.CanCollide = false
+                end
+            end
+        end
+    end
+    NoclipConnection = RunService.Stepped:Connect(Nocl)
+end
+
+local function clip()
+    if NoclipConnection then NoclipConnection:Disconnect() end
+    Clip = true
+end
+
+-- GUI Creation
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "NoclipGUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = PlayerGui
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0,120,0,60)
+Frame.Position = UDim2.new(0.05,0,0.05,0)
+Frame.BackgroundColor3 = Color3.fromRGB(0,120,255)
+Frame.BorderSizePixel = 0
+Frame.Parent = ScreenGui
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0,20) -- لبه‌ها کمی کلفت‌تر
+UICorner.Parent = Frame
+
+-- Title Label
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1,0,0,20)
+Title.Position = UDim2.new(0,0,0,0)
+Title.BackgroundTransparency = 1
+Title.Text = "رد شدن از همه چیز"
+Title.Font = Enum.Font.SourceSansBold
+Title.TextScaled = true
+Title.TextColor3 = Color3.new(1,1,1)
+Title.Parent = Frame
+
+local Button = Instance.new("TextButton")
+Button.Size = UDim2.new(1, -10, 1, -30)
+Button.Position = UDim2.new(0,5,0,25)
+Button.BackgroundColor3 = Color3.fromRGB(255,0,0)
+Button.Text = "خاموش"
+Button.Font = Enum.Font.SourceSansBold
+Button.TextScaled = true
+Button.TextColor3 = Color3.new(1,1,1)
+Button.Parent = Frame
+
+local Enabled = false
+
+-- Toggle Noclip
+Button.MouseButton1Click:Connect(function()
+    Enabled = not Enabled
+    if Enabled then
+        Button.Text = "روشن"
+        Button.BackgroundColor3 = Color3.fromRGB(0,255,0)
+        noclip()
+    else
+        Button.Text = "خاموش"
+        Button.BackgroundColor3 = Color3.fromRGB(255,0,0)
+        clip()
+    end
+end)
+
+-- Draggable
+local dragging = false
+local dragInput, mousePos, framePos
+
+Frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        mousePos = input.Position
+        framePos = Frame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+Frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - mousePos
+        Frame.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X,
+                                   framePos.Y.Scale, framePos.Y.Offset + delta.Y)
+    end
+end)
+
+-- Start Noclip disabled
+clip()
+end)
+
+createButton("Droptools", function()
+local player = game.Players.LocalPlayer
+
+-- GUI که بعد از مرگ هم باقی بمونه
+local gui = Instance.new("ScreenGui")
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- ساخت دکمه
+local dropButton = Instance.new("TextButton")
+dropButton.Text = "انداختن وسیله"
+dropButton.Position = UDim2.new(0, 10, 0, 200)
+dropButton.Size = UDim2.new(0, 120, 0, 40)
+dropButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+dropButton.TextColor3 = Color3.new(1, 1, 1)
+dropButton.BorderSizePixel = 0 -- حاشیه خارجی خاموش شد
+dropButton.Parent = gui
+
+-- اضافه کردن حاشیه‌ها داخل دکمه
+local function createInnerBorder(parent)
+    local thickness = 3
+    local color = Color3.fromRGB(100,100,100)
+
+    -- بالا
+    local top = Instance.new("Frame")
+    top.Size = UDim2.new(1, 0, 0, thickness)
+    top.Position = UDim2.new(0,0,0,0)
+    top.BackgroundColor3 = color
+    top.BorderSizePixel = 0
+    top.Parent = parent
+
+    -- پایین
+    local bottom = Instance.new("Frame")
+    bottom.Size = UDim2.new(1,0,0,thickness)
+    bottom.Position = UDim2.new(0,0,1,-thickness)
+    bottom.BackgroundColor3 = color
+    bottom.BorderSizePixel = 0
+    bottom.Parent = parent
+
+    -- چپ
+    local left = Instance.new("Frame")
+    left.Size = UDim2.new(0, thickness, 1, 0)
+    left.Position = UDim2.new(0,0,0,0)
+    left.BackgroundColor3 = color
+    left.BorderSizePixel = 0
+    left.Parent = parent
+
+    -- راست
+    local right = Instance.new("Frame")
+    right.Size = UDim2.new(0, thickness, 1, 0)
+    right.Position = UDim2.new(1,-thickness,0,0)
+    right.BackgroundColor3 = color
+    right.BorderSizePixel = 0
+    right.Parent = parent
+end
+
+createInnerBorder(dropButton)
+
+-- تابع انداختن وسیله
+local function onDropButtonClicked()
+    local character = player.Character
+    if character then
+        local tool = character:FindFirstChildWhichIsA("Tool")
+        if tool then
+            tool.Parent = workspace
+        end
+    end
+end
+
+dropButton.MouseButton1Click:Connect(onDropButtonClicked)
+
+-- قابلیت جابه‌جایی با موس و لمس
+local UserInputService = game:GetService("UserInputService")
+
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    dropButton.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+dropButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = dropButton.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+dropButton.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
+end)
+
+createButton("Sword And Slap Reach", function()
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+local PhantomForcesWindow = Library:NewWindow("Universal sword reach")
+local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
+
+local hitboxSize = 30
+local hitboxActive = false
+local colors = {Color3.fromRGB(255, 0, 0), Color3.fromRGB(0, 255, 0), Color3.fromRGB(0, 0, 255), Color3.fromRGB(255, 255, 0)}
+
+local function ModifyHitbox(size)
+    local player = game:GetService("Players").LocalPlayer
+    local char = player.Character
+    if not char then return end
+
+    local tool = nil
+    for _, v in pairs(char:GetChildren()) do
+        if v:IsA("Tool") then
+            tool = v
+            break
+        end
+    end
+
+    if not tool then
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Need Tool";
+            Text = "Need Tool";
+            Duration = 5;
+        })
+        return
+    end
+
+    hitboxActive = size > 1
+
+    if hitboxActive then
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://413861777"
+        sound.Parent = game:GetService("SoundService")
+        sound:Play()
+
+        local handle = tool:FindFirstChild("Handle")
+        if handle then
+            handle.Massless = true
+            handle.Transparency = 1
+            handle.Size = Vector3.new(size, size, size)
+
+            local selectionBox = Instance.new("SelectionBox", handle)
+            selectionBox.Adornee = handle
+
+            spawn(function()
+                local index = 1
+                while hitboxActive do
+                    selectionBox.Color3 = colors[index]
+                    index = (index % #colors) + 1
+                    wait(0.5)
+                end
+                selectionBox:Destroy()
+            end)
+        end
+    else
+        if tool and tool:FindFirstChild("Handle") then
+            local handle = tool.Handle
+            handle.Size = Vector3.new(1, 1, 1)
+            for _, v in pairs(handle:GetChildren()) do
+                if v:IsA("SelectionBox") then
+                    v:Destroy()
+                end
+            end
+        end
+    end
+end
+
+KillingCheats:CreateButton("Increase Hitbox", function()
+    hitboxSize = hitboxSize + 5
+    ModifyHitbox(hitboxSize)
+end)
+
+KillingCheats:CreateButton("Decrease Hitbox", function()
+    if hitboxSize > 5 then
+        hitboxSize = hitboxSize - 5
+        ModifyHitbox(hitboxSize)
+    end
+end)
+
+KillingCheats:CreateButton("Reset Hitbox", function()
+    hitboxSize = 1
+    ModifyHitbox(hitboxSize)
+end)
+end)
+
+createButton("Super Ring", function()
+--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+-- The tags get stealed and i will not leak it
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local SoundService = game:GetService("SoundService")
+local StarterGui = game:GetService("StarterGui")
+local HttpService = game:GetService("HttpService")
+
+local LocalPlayer = Players.LocalPlayer
+
+-- Sound Effects
+local function playSound(soundId)
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://" .. soundId
+    sound.Parent = SoundService
+    sound:Play()
+    sound.Ended:Connect(function()
+        sound:Destroy()
+    end)
+end
+
+-- Play initial sound
+playSound("2865227271")
+
+-- GUI Creation
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "SuperRingPartsGUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 300, 0, 500)
+MainFrame.Position = UDim2.new(0.5, -150, 0.5, -250)
+MainFrame.BorderSizePixel = 0
+MainFrame.Parent = ScreenGui
+
+-- Make the GUI round
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 20)
+UICorner.Parent = MainFrame
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.Position = UDim2.new(0, 0, 0, 0)
+Title.Text = "Super Ring Parts V6 by lukas"
+Title.TextColor3 = Color3.fromRGB(0, 0, 0)
+Title.BackgroundColor3 = Color3.fromRGB(0, 204, 204)
+Title.Font = Enum.Font.Fondamento
+Title.TextSize = 22
+Title.Parent = MainFrame
+
+-- Round the title
+local TitleCorner = Instance.new("UICorner")
+TitleCorner.CornerRadius = UDim.new(0, 20)
+TitleCorner.Parent = Title
+
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Size = UDim2.new(0.8, 0, 0, 40)
+ToggleButton.Position = UDim2.new(0.1, 0, 0.1, 0)
+ToggleButton.Text = "Ring Off"
+ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+ToggleButton.Font = Enum.Font.Fondamento
+ToggleButton.TextSize = 18
+ToggleButton.Parent = MainFrame
+
+-- Round the toggle button
+local ToggleCorner = Instance.new("UICorner")
+ToggleCorner.CornerRadius = UDim.new(0, 10)
+ToggleCorner.Parent = ToggleButton
+
+-- Configuration table
+local config = {
+    radius = 50,
+    height = 100,
+    rotationSpeed = 10,
+    attractionStrength = 1000,
+}
+
+-- Save and load functions
+local function saveConfig()
+    local configStr = HttpService:JSONEncode(config)
+    writefile("SuperRingPartsConfig.txt", configStr)
+end
+
+local function loadConfig()
+    if isfile("SuperRingPartsConfig.txt") then
+        local configStr = readfile("SuperRingPartsConfig.txt")
+        config = HttpService:JSONDecode(configStr)
+    end
+end
+
+loadConfig()
+
+-- Function to create control buttons and textboxes
+lo
